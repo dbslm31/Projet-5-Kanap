@@ -7,7 +7,11 @@ fetch("http://localhost:3000/api/products")
     .then(function (products) {
         console.log(products);
 
-        let items = document.getElementById('items');
+        //constante pour sélectionner l'élément sur lequel on souhaite travailler 
+
+        const items = document.getElementById('items');
+
+        // boucle qui permet de selectionner les éléments de l'API  
 
         for (let i = 0; i < products.length; i++) {
             const itemsCards = `<a href="./product.html?${products[i]._id}"> 
@@ -17,7 +21,7 @@ fetch("http://localhost:3000/api/products")
                 <p class="productDescription">${products[i].description}</p>
                 </article>
                 </a>`;
-            items.innerHTML = itemsCards;
+            items.innerHTML += itemsCards;
         }
 
     })
