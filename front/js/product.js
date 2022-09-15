@@ -1,10 +1,14 @@
-const product = window.location.search.split("?").join("");
-console.log(product);
+
+let str = window.location.href;
+let url = new URL(str);
+let id = url.searchParams.get("id");
 
 let productData = [];
 
+// Afficher les informations du produit sur la page produit
+
 const fetchProduct = async () => {
-    fetch(`http://localhost:3000/api/products/${product}`)
+    fetch(`http://localhost:3000/api/products/${id}`)
         .then((res) => res.json())
         .then((promise) => {
             productData = promise;
@@ -35,6 +39,15 @@ const fetchProduct = async () => {
 };
 
 fetchProduct();
+
+// Ajouter le produit au panier lorsque l'utilisateur clique sur le boutton
+
+let cartButton = document.getElementById("addToCart");
+
+cartButton.addEventListener('click', function () {
+
+});
+
 
 
 
