@@ -44,7 +44,61 @@ fetchProduct();
 
 let cartButton = document.getElementById("addToCart");
 
-cartButton.addEventListener('click', function () {
+cartButton.addEventListener('click', function (event) {
+    if (document.querySelector("#colors").value == "") {
+        alert("Veuillez choisir la couleur de votre canapé");
+        event.preventDefault();
+
+
+    } else {
+
+        //déclaration des variables couleur et quantité
+        let color = document.getElementById("colors").value;
+        let quantity = document.getElementById("quantity").value;
+
+        //création de l'object JS avec les infos du produits
+        let productInfos = {
+            id: id,
+            quantity: quantity,
+            color: color
+        }
+        console.log(productInfos);
+
+        //enregistrement des informations produits dans localStorage
+        localStorage.setItem("productInfos", JSON.stringify(productInfos));
+
+        let productInCart = JSON.parse(localStorage.getItem("productInfos"));
+        console.log("in cart", productIncart);
+
+        //Tableau
+
+        //Si le panier est vide : création d'un tableau
+        //Push du nouvel élément dans le panier
+        //Mise à jour de localStorage
+
+        if (productInCart) {
+            productInCart = []
+            productInCart.push(productInfos);
+            localStorage.setItem("productInfos", JSON.stringify(productInfos));
+        } else {
+            for (i = 0; i < productInCart.lenght; i++) {
+                if (productInfos[i][0].id === id && productInfos[i][2].color === color) {
+                    productInfos.quantity[i][1] += quantity;
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
+    }
+
+
 
 });
 
