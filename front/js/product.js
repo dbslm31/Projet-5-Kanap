@@ -33,76 +33,82 @@ const fetchProduct = async () => {
             <option value="${productData.colors[i]}">${productData.colors[i]}</option>`;
             }
 
-
+            addToCart(productData);
         });
 
 };
 
 fetchProduct();
 
-// Ajouter le produit au panier lorsque l'utilisateur clique sur le boutton
 
-let cartButton = document.getElementById("addToCart");
+const addToCart = () => {
 
-cartButton.addEventListener('click', function (event) {
-    if (document.querySelector("#colors").value == "") {
-        alert("Veuillez choisir la couleur de votre canapé");
-        event.preventDefault();
+    // Definition de la variable cartButton
+    let cartButton = document.getElementById("addToCart");
+
+    // Ecoute de l'évènement click
+    cartButton.addEventListener("click", () => {
+
+        // Récupération de ce que contient le local storage
+        let productArray = JSON.parse(localStorage.getItem("product"))
 
 
-    } else {
-
-        //déclaration des variables couleur et quantité
+        // Définition des variables color et quantity
         let color = document.getElementById("colors").value;
         let quantity = document.getElementById("quantity").value;
+        console.log('color', color);
+        console.log('quantity', quantity)
 
-        //création de l'object JS avec les infos du produits
+        //Création objet JS avec les infos du produit
         let productInfos = {
             id: id,
-            quantity: quantity,
-            color: color
+            color: color,
+            quantity: quantity
+
         }
-        console.log(productInfos);
 
-        //enregistrement des informations produits dans localStorage
-        localStorage.setItem("productInfos", JSON.stringify(productInfos));
 
-        let productInCart = JSON.parse(localStorage.getItem("productInfos"));
-        console.log("in cart", productIncart);
+        // si le panier est vide, on push le produit dans le localStorage
+        if (productArray == null) {
+            productArray = [];
+            productArray.push(productInfos)
+            console.log("productArray", productArray);
+            localStorage.setItem("product", JSON.stringify(productArray))
 
-        //Tableau
+            // si le panier n'est pas vide    
+        } else if (productArray != null) {
 
-        //Si le panier est vide : création d'un tableau
-        //Push du nouvel élément dans le panier
-        //Mise à jour de localStorage
 
-        if (productInCart) {
-            productInCart = []
-            productInCart.push(productInfos);
-            localStorage.setItem("productInfos", JSON.stringify(productInfos));
-        } else {
-            for (i = 0; i < productInCart.lenght; i++) {
-                if (productInfos[i][0].id === id && productInfos[i][2].color === color) {
-                    productInfos.quantity[i][1] += quantity;
+            for (i = 0; i < productArray.length; i++) {
+                console.log('test')
+
+                //si le produit (id & color) est déjà dans le panier on incrémente quantity
+                if (productArray[i].id === id && productArray[i].color === color) {
+                    //transforme les strings en numbers
+                    let newQuantity = Number(productArray[i].quantity);
+                    let oldQuantity = Number(quantity);
+                    newQuantity += oldQuantity;
+                    productArray[i].quantity = newQuantity;
+                    console.log(productArray[i].quantity)
+                    localStorage.setItem("product", JSON.stringify(productArray))
+                    productArray = JSON.parse(localStorage.getItem("product"))
+
+                    //si le produit n'est pas djà présent dans le panier    
+                } else {
+                    productArray.push(productInfos);
+                    localStorage.setItem("product", JSON.stringify(productArray))
+                    JSON.parse(localStorage.getItem("product"))
+
                 }
             }
+
+
+            // sinon on ajoute le produit
+
+
         }
 
 
-
-
-
-
-
-
-
-    }
-
-
-
-});
-
-
-
-
-
+    });
+    return (productArray = JSON.parse(localStorage.getItem("product")));
+}
