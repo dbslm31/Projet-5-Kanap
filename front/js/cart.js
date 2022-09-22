@@ -1,8 +1,7 @@
-// Récupération des infos sur l'API
-const fetchProduct = async () => {
-    fetch(`http://localhost:3000/api/products`)
-        .then((res) => res.json())
-        .then((promise) => {
-        })
-}
+// Récupération des infos du localStorage
+
+let addedProducts = JSON.parse(localStorage.getItem("product"));
+
+
+
 

@@ -55,7 +55,7 @@ const addToCart = () => {
 
         // Définition des variables color et quantity
         let color = document.getElementById("colors").value;
-        let quantity = document.getElementById("quantity").value;
+        let quantity = Number(document.getElementById("quantity").value);
         console.log('color', color);
         console.log('quantity', quantity)
 
@@ -67,48 +67,33 @@ const addToCart = () => {
 
         }
 
+        // si la couleur ou la quantité n'est pas selectionnée
+        if (color == "" || quantity == "") {
+            alert("Veuillez spécifier la couleur et la quantité");
 
-        // si le panier est vide, on push le produit dans le localStorage
-        if (productArray == null) {
+        } else if (productArray == null) {
             productArray = [];
             productArray.push(productInfos)
             console.log("productArray", productArray);
-            localStorage.setItem("product", JSON.stringify(productArray))
-
-            // si le panier n'est pas vide    
-        } else if (productArray != null) {
+            localStorage.setItem("product", JSON.stringify(productArray));
 
 
+        } else {
             for (i = 0; i < productArray.length; i++) {
-                console.log('test')
-
-                //si le produit (id & color) est déjà dans le panier on incrémente quantity
                 if (productArray[i].id === id && productArray[i].color === color) {
-                    //transforme les strings en numbers
                     let newQuantity = Number(productArray[i].quantity);
-                    let oldQuantity = Number(quantity);
-                    newQuantity += oldQuantity;
+                    newQuantity += quantity;
                     productArray[i].quantity = newQuantity;
-                    console.log(productArray[i].quantity)
-                    localStorage.setItem("product", JSON.stringify(productArray))
+                    localStorage.setItem("product", JSON.stringify(productArray));
                     productArray = JSON.parse(localStorage.getItem("product"))
-
-                    //si le produit n'est pas djà présent dans le panier    
                 } else {
-                    productArray.push(productInfos);
-                    localStorage.setItem("product", JSON.stringify(productArray))
-                    JSON.parse(localStorage.getItem("product"))
-
+                    productArray.push(productInfos)
+                    localStorage.setItem("product", JSON.stringify(productArray));
                 }
             }
-
-
-            // sinon on ajoute le produit
-
-
         }
 
 
     });
-    return (productArray = JSON.parse(localStorage.getItem("product")));
+
 }
