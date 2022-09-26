@@ -58,16 +58,21 @@ cartButton.addEventListener("click", () => {
     let color = document.getElementById("colors").value;
     let quantity = Number(document.getElementById("quantity").value);
     console.log('color', color);
-    console.log('quantity', quantity)
+    console.log('quantity', quantity);
 
 
     //Création objet JS avec les infos du produit
     let productInfos = {
         id: id,
         color: color,
-        quantity: quantity
+        quantity: quantity,
+        name: productData.name,
+        price: productData.price,
+        image: productData.imageUrl
 
     }
+
+    console.log("productInfos Name", productInfos.name)
 
     // si la couleur ou la quantité n'est pas selectionnée
     if (color == "" || quantity == "") {
@@ -110,12 +115,12 @@ cartButton.addEventListener("click", () => {
 
         /*const productArrayLength = productArray.length
         let isProductHere = false
-
+    
         for (let i = 0; i < productArrayLength; i++) {
             console.log(i);
             let newQuantity = Number(productArray[i].quantity);
             
-
+    
             // si les produits ont le même id & la même couleur on incrémente la quantité
             if (productArray[i].id === id && productArray[i].color === color) {
                 isProductHere = true
@@ -124,11 +129,11 @@ cartButton.addEventListener("click", () => {
                 productArray[i].quantity = newQuantity;
                 localStorage.setItem("product", JSON.stringify(productArray));
                 productArray = JSON.parse(localStorage.getItem("product"))
-
-
+    
+    
                 // sinon on push produit en tant que nouveau produit dans le panier
             } 
-
+    
         }
         if (isProductHere == false) {
             product
