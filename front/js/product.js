@@ -112,33 +112,6 @@ cartButton.addEventListener("click", () => {
 
 
 
-
-        /*const productArrayLength = productArray.length
-        let isProductHere = false
-    
-        for (let i = 0; i < productArrayLength; i++) {
-            console.log(i);
-            let newQuantity = Number(productArray[i].quantity);
-            
-    
-            // si les produits ont le même id & la même couleur on incrémente la quantité
-            if (productArray[i].id === id && productArray[i].color === color) {
-                isProductHere = true
-                console.log("block if")
-                newQuantity += quantity;
-                productArray[i].quantity = newQuantity;
-                localStorage.setItem("product", JSON.stringify(productArray));
-                productArray = JSON.parse(localStorage.getItem("product"))
-    
-    
-                // sinon on push produit en tant que nouveau produit dans le panier
-            } 
-    
-        }
-        if (isProductHere == false) {
-            product
-        }
-        */
     }
 });
 
