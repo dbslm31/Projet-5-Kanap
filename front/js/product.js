@@ -2,7 +2,6 @@
 let str = window.location.href;
 let url = new URL(str);
 let id = url.searchParams.get("id");
-
 let productData = [];
 
 // Afficher les informations du produit sur la page produit
@@ -65,10 +64,7 @@ cartButton.addEventListener("click", () => {
     let productInfos = {
         id: id,
         color: color,
-        quantity: quantity,
-        name: productData.name,
-        price: productData.price,
-        image: productData.imageUrl
+        quantity: quantity
 
     }
 
