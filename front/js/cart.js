@@ -1,4 +1,3 @@
-
 function displayProduct() {
   // Récupération des données du localStorage et création du tableau
   let productArray = JSON.parse(localStorage.getItem("product"));
@@ -16,14 +15,14 @@ function displayProduct() {
     // si le panier contient des produits   
   } else {
     console.log('le panier contient des produits')
-    for (i = 0; i < productArray.length; i++) {
+    for (let i = 0; i < productArray.length; i++) {
       let id = productArray[i].id
       console.log(id)
 
       fetch(`http://localhost:3000/api/products/${id}`)
         .then((res) => res.json())
         .then((productData) => {
-          console.log('Call API ok')
+          console.log('Call API ok', productData)
 
 
           document.getElementById("cart__items").innerHTML += `<article class="cart__item" data-id="${productData.id}" data-color="${productArray[i].color}">
@@ -66,39 +65,13 @@ function deleteProduct() {
   // Supprimer un produit du panier au clic sur le bouton "Supprimer"
 
   // Définition de la variable deleteButton
-  let deleteBtn = document.getElementsByClassName("deleteItem");
-  console.log(deleteBtn)
-
-  // Selectionner chaque bouton 'supprimer' individuellement
-  for (i = 0; i < deleteBtn.length; i++) {
-    console.log("boucle for")
-    let deleteItem = deleteBtn[i];
-
-    //Ecoute de l'évènement click sur chaque élément de deleteItems
-    deleteItem.addEventListener("click", (e) => {
-      e.preventDefault()
-
-      //Définition du produit à supprimer
-      for (j = 0; j < productArray.length; j++) {
-        let idToDelete = productArray[j].id;
-        let colorToDelete = productArray[j].color;
-
-        // Recherche du produit à supprimer dans le localStorage
-        productArray = productArray.filter(product => product.id === idToDelete || product.color === colorToDelete);
-        console.log("productArrayDeleted", productArray)
-        localStorage.setItem("product", JSON.stringify(productArray));
-
-      }
-      // Rechargement de la page
-      location.reload();
+  console.log("deleteButtons", document.getElementsByClassName("deleteItem"))
+  const deleteButtons = document.getElementsByClassName("deleteItem");
+  let dltArray = Array.from(deleteButtons)
+  console.log("dltArray", dltArray)
 
 
-    });
-
-
-  };
 }
-
 deleteProduct();
 
 
@@ -106,4 +79,19 @@ deleteProduct();
 
 // Changer la quantité d'un produit depuis la page Panier
 
+/*function changeQuantity() {
+  const qtyInputs = document.getElementsByName("itemQuantity");
+  console.log(qtyInputs);
+
+  // convert NodeList to  Array 
+  let qtyArray = Array.from(qtyInputs)
+  console.log("ArrayQty", qtyArray)
+
+
+
+
+
+}
+
+changeQuantity();*/
 
