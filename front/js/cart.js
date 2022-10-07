@@ -1,3 +1,80 @@
+
+// changer la quantité de produit depuis le panier
+
+function changeQuantity() {
+
+  let productCards = document.getElementsByClassName("cart__item")
+  let productCardsArray = Array.from(productCards);
+
+  //boucle for sur les cartes produits
+
+  for (let i = 0; i < productCardsArray.length; i++) {
+
+    const qtyInput = productCardsArray[i].getElementsByClassName("itemQuantity")[0]
+
+
+    qtyInput.addEventListener('input', function () {
+      //Récupération du localStorage
+      let productArray = JSON.parse(localStorage.getItem("product"));
+
+      //Définition des variables id & color
+      let id = productCardsArray[i].getAttribute("data-id")
+      let color = productCardsArray[i].getAttribute("data-color")
+      console.log(productCardsArray[i].getAttribute("data-id"))
+      console.log(color)
+
+      //Recherche du produit selectionné dans le localStorage
+      const findProduct = productArray.find(product => product.id === id && product.color === color)
+      const newQty = productCardsArray[i].getElementsByClassName("itemQuantity")[0].value;
+      console.log("newQty", qtyInput)
+      //Remplacement de la quantité et mise à jour du localStorage
+      findProduct.quantity = newQty
+      console.log("qty2", findProduct.quantity)
+      localStorage.setItem("product", JSON.stringify(productArray));
+
+    })
+
+  }
+
+
+
+
+
+}
+
+// Création de la fonction deleteProduct
+function deleteProduct() {
+
+  let productCards = document.getElementsByClassName("cart__item")
+  let productCardsArray = Array.from(productCards);
+
+  //Boucle for sur les cartes produits
+  for (let i = 0; i < productCardsArray.length; i++) {
+
+    // Définition de la variable deleteButton
+    const deleteButton = productCardsArray[i].getElementsByClassName("deleteItem")[0];
+
+    // Ecoute de l'évènement "click" sur les deleteButtons
+    deleteButton.addEventListener("click", function (dlt) {
+
+      //Récupération du localStorage
+      let productArray = JSON.parse(localStorage.getItem("product"));
+
+      //Définition des variables id & color
+      let id = Number(productCardsArray[i].getAttribute("data-id"))
+      let color = productCardsArray[i].getAttribute("data-color")
+
+      // Retrait du  produit concerné du localStorage & page reload
+      const newProductArray = productArray.filter(product => product.id != id && product.color != color)
+      localStorage.setItem("product", JSON.stringify(newProductArray));
+      window.location.reload();
+
+    })
+
+  }
+}
+
+
 function displayProduct() {
   // Récupération des données du localStorage et création du tableau
   let productArray = JSON.parse(localStorage.getItem("product"));
@@ -19,13 +96,15 @@ function displayProduct() {
       let id = productArray[i].id
       console.log(id)
 
+      // call API pour récupérer le nom et les photos
+
       fetch(`http://localhost:3000/api/products/${id}`)
         .then((res) => res.json())
         .then((productData) => {
           console.log('Call API ok', productData)
 
-
-          document.getElementById("cart__items").innerHTML += `<article class="cart__item" data-id="${productData.id}" data-color="${productArray[i].color}">
+          // Ajout de <artcile> à la page panier
+          document.getElementById("cart__items").innerHTML += `<article class="cart__item" data-id="${productData._id}" data-color="${productArray[i].color}">
         <div class="cart__item__img">
           <img src="${productData.imageUrl}" alt="${productData.altTxt}">
         </div>
@@ -46,6 +125,10 @@ function displayProduct() {
           </div>
         </div>
       </article>`
+
+          deleteProduct();
+          changeQuantity();
+
         })
         .catch(err => console.log(err))
 
@@ -60,38 +143,12 @@ displayProduct();
 
 
 // Supprimer un produit du panier au clic sur le bouton "Supprimer"
-function deleteProduct() {
-
-  // Supprimer un produit du panier au clic sur le bouton "Supprimer"
-
-  // Définition de la variable deleteButton
-  console.log("deleteButtons", document.getElementsByClassName("deleteItem"))
-  const deleteButtons = document.getElementsByClassName("deleteItem");
-  let dltArray = Array.from(deleteButtons)
-  console.log("dltArray", dltArray)
-
-
-}
-deleteProduct();
-
-
-
-
-// Changer la quantité d'un produit depuis la page Panier
-
-/*function changeQuantity() {
-  const qtyInputs = document.getElementsByName("itemQuantity");
-  console.log(qtyInputs);
-
-  // convert NodeList to  Array 
-  let qtyArray = Array.from(qtyInputs)
-  console.log("ArrayQty", qtyArray)
 
 
 
 
 
-}
 
-changeQuantity();*/
+
+
 
