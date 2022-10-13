@@ -1,3 +1,5 @@
+//////////////////////////// CHANGER LA QUANTIÉ D'UN PRODUIT ////////////////////////////
+
 
 function changeQuantity() {
 
@@ -28,14 +30,14 @@ function changeQuantity() {
       findProduct.quantity = newQty
 
       localStorage.setItem("product", JSON.stringify(productArray));
-      window.location.reload();
+      totalAll();
 
     })
 
   }
 }
 
-
+///////////////////////////// SUPPRIMER UN PRODUIT ///////////////////////////////////
 
 
 function deleteProduct() {
@@ -69,7 +71,7 @@ function deleteProduct() {
   }
 }
 
-
+//////////////////////////////// AFFICHER LE TOTAL SUR LA PAGE PANIER //////////////////////////////////
 
 
 // Affichage du total sur la page panier
@@ -118,7 +120,7 @@ totalAll();
 
 
 
-
+//////////////////////////// AFFICHER LES PRODUITS DANS LE PANIER ///////////////////////////
 
 
 
@@ -193,7 +195,7 @@ function displayProduct() {
 displayProduct();
 
 
-
+////////////////////////////// VERIFIER LES INFOS DU FORMULAIRE ///////////////////////////////////////////
 
 
 // Récupérer les informations contenues dans le formulaire
@@ -206,46 +208,112 @@ console.log("email", email)
 console.log("firstName", firstName)
 
 // Définition des regex 
-let namesRegex = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u
-let adressRegex = /(\d{1,}) [a-zA-Z0-9\s]+(\.)? [a-zA-Z]+(\,)? [A-Z]{2} [0-9]{5,6}/g
-let emailRegex = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/
+let namesRegex = /^[a-zA-Zèé\-]+$/
+let addressRegex = /^[0-9]{1,3}[a-zA-Zèé\-'\s]+$/
+let emailRegex = /^[a-zA-Z\.-]+@[a-zA-Z]+\.[a-zA-Z]{2,3}$/
 
 
-//Définition de l'objet JS avec les infos de commandes
-let orderInfos = {
-  prénom: firstName,
-  nom: lastName,
-  adresse: address,
-  ville: city,
-  email: email
-}
+// fonction de verification du prénom
+function formVerif(regex, input, errorId, errorMsg) {
+  let regexResult = regex.test(input)
 
-console.log("orderInfos", orderInfos)
-
-// fonction de verification du nom
-function firstNameVerif() {
-  console.log("salut")
-  let firstNameTest = namesRegex.test(firstName.value)
-  console.log("firstNameTest", firstNameTest)
-  if (firstNameTest == true) {
-    ""
+  if (regexResult == true) {
+    document.getElementById(errorId).innerText = ""
     return true;
 
   } else {
-    let firstNameErrorMsg = document.getElementById("firstNameErrorMsg").innerText = "Ne peut contenir que des lettres"
+    document.getElementById(errorId).innerText = errorMsg
     return false;
   }
 }
 
+function inputTxt(inputName, regex, errorId, errorMsg) {
+  inputName.addEventListener('input', function () {
+    formVerif(regex, inputName.value, errorId, errorMsg);
+  })
+}
 
-firstName.addEventListener('input', function () {
-  console.log("yoooo")
-  firstNameVerif();
+inputTxt(firstName, namesRegex, "firstNameErrorMsg", "Le prénom ne doit contenir que des lettres");
+inputTxt(lastName, namesRegex, "lastNameErrorMsg", "Le nom ne doit contenir que des lettres");
+
+
+
+//////////////////////////////////////// VALIDER LA COMMANDE  ///////////////////////////
+
+
+
+//Récupération des informations de commande
+
+//addEventListener onclick sur le bouton  "commander"
+
+let orderBtn = document.getElementById('order')
+console.log('orderBtn', orderBtn)
+
+orderBtn.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  console.log("commande")
+
+  if (true) {
+    console.log("regex OK")
+
+    // Récupération id, couleur et qty produits
+    let productArray = JSON.parse(localStorage.getItem("product"));
+
+    function getIdProduct(productArray) {
+      let idProduct = [];
+      for (let i = 0; i < productArray.length; i++) {
+        id = productArray[i].id;
+        idProduct.push(id);
+      }
+      return idProduct;
+    }
+
+    let productId = getIdProduct(productArray);
+
+    //Création de l'objet JS avec les infos de commandes
+    let orderInfos = {
+      contact: {
+        firstName: firstName.value,
+        lastName: lastName.value,
+        address: address.value,
+        city: city.value,
+        email: email.value
+      },
+      products: productId
+
+    }
+    console.log('orderInfos', orderInfos)
+
+
+    //Envoie des infos de commandes vers l'API
+
+    fetch("http://localhost:3000/api/products/order", {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(orderInfos)
+
+    }).then((res) => res.json())
+      .then((promise) => {
+        let newOrder = promise
+        console.log('newOrder', newOrder)
+      })
+      .catch(err => console.log(err))
+
+
+  } else {
+    alert("Veuillez vérifier les informations du formulaire");
+  }
+
 })
 
-
-
-
+//Finir de mettre en place les regex manquants
+//check des regex dans le if l257
+//vider le localStorage une fois la commande passée
+//Etapes 10/11/12
 
 
 
