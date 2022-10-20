@@ -219,10 +219,12 @@ function formVerif(regex, input, errorId, errorMsg) {
 
   if (regexResult == true) {
     document.getElementById(errorId).innerText = ""
+    let result = 1
     return true;
 
   } else {
     document.getElementById(errorId).innerText = errorMsg
+    let result = 0
     return false;
   }
 }
@@ -233,8 +235,10 @@ function inputTxt(inputName, regex, errorId, errorMsg) {
   })
 }
 
-inputTxt(firstName, namesRegex, "firstNameErrorMsg", "Le prénom ne doit contenir que des lettres");
-inputTxt(lastName, namesRegex, "lastNameErrorMsg", "Le nom ne doit contenir que des lettres");
+let firstNameInput = inputTxt(firstName, namesRegex, "firstNameErrorMsg", "Le prénom ne doit contenir que des lettres");
+let lastNameInput = inputTxt(lastName, namesRegex, "lastNameErrorMsg", "Le nom ne doit contenir que des lettres");
+let addressInput = inputTxt(address, addressRegex, "addressErrorMsg", "Le format d'adresse est incorrect");
+let emailInput = inputTxt(email, emailRegex, "emailErrorMsg", "L'email est incorrect");
 
 
 
@@ -254,7 +258,7 @@ orderBtn.addEventListener('click', function (e) {
 
   console.log("commande")
 
-  if (true) {
+  if (result = 1) {
     console.log("regex OK")
 
     // Récupération id, couleur et qty produits
@@ -299,9 +303,31 @@ orderBtn.addEventListener('click', function (e) {
     }).then((res) => res.json())
       .then((promise) => {
         let newOrder = promise
+
+        //Récupération de l'ID de commande
+        let orderId = newOrder.orderId
         console.log('newOrder', newOrder)
+        console.log("orderId", orderId)
+
+        // Redirection vers la page confirmation
+        window.location = "confirmation.html?orderid=" + orderId
+
+
+
+
+
       })
       .catch(err => console.log(err))
+
+    //Suppression du localstorage
+
+
+
+
+
+
+
+
 
 
   } else {
@@ -310,9 +336,8 @@ orderBtn.addEventListener('click', function (e) {
 
 })
 
-//Finir de mettre en place les regex manquants
-//check des regex dans le if l257
-//vider le localStorage une fois la commande passée
+
+// Effacer le localStorage une fois la commande passée
 //Etapes 10/11/12
 
 
