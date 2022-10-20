@@ -312,6 +312,9 @@ orderBtn.addEventListener('click', function (e) {
         // Redirection vers la page confirmation
         window.location = "confirmation.html?orderid=" + orderId
 
+        //suppression du localStorage
+        localStorage.clear();
+
 
 
 
@@ -319,7 +322,7 @@ orderBtn.addEventListener('click', function (e) {
       })
       .catch(err => console.log(err))
 
-    //Suppression du localstorage
+
 
 
 
@@ -337,8 +340,7 @@ orderBtn.addEventListener('click', function (e) {
 })
 
 
-// Effacer le localStorage une fois la commande passée
-//Etapes 10/11/12
+
 
 
 
