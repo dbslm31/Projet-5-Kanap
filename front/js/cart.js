@@ -7,28 +7,19 @@ function changeQuantity() {
   let productCardsArray = Array.from(productCards);
 
   //boucle for sur les cartes produits
-
   for (let i = 0; i < productCardsArray.length; i++) {
-
     const qtyInput = productCardsArray[i].getElementsByClassName("itemQuantity")[0]
-
-
     qtyInput.addEventListener('input', function () {
       //Récupération du localStorage
       let productArray = JSON.parse(localStorage.getItem("product"));
-
       //Définition des variables id & color
       let id = productCardsArray[i].getAttribute("data-id")
       let color = productCardsArray[i].getAttribute("data-color")
-
-
       //Recherche du produit selectionné dans le localStorage
       const findProduct = productArray.find(product => product.id === id && product.color === color)
       const newQty = productCardsArray[i].getElementsByClassName("itemQuantity")[0].value;
-
       //Remplacement de la quantité et mise à jour du localStorage
       findProduct.quantity = newQty
-
       localStorage.setItem("product", JSON.stringify(productArray));
       totalAll();
 
@@ -41,19 +32,14 @@ function changeQuantity() {
 
 
 function deleteProduct() {
-
   let productCards = document.getElementsByClassName("cart__item")
   let productCardsArray = Array.from(productCards);
-
   //Boucle for sur les cartes produits
   for (let i = 0; i < productCardsArray.length; i++) {
-
     // Définition de la variable deleteButton
     const deleteButton = productCardsArray[i].getElementsByClassName("deleteItem")[0];
-
     // Ecoute de l'évènement "click" sur les deleteButtons
     deleteButton.addEventListener("click", function (dlt) {
-
       //Récupération du localStorage
       let productArray = JSON.parse(localStorage.getItem("product"));
 
@@ -76,7 +62,6 @@ function deleteProduct() {
 
 // Affichage du total sur la page panier
 function totalAll() {
-
   let productArray = JSON.parse(localStorage.getItem("product"));
   let totalQty = 0
   let totalPricePerItem = 0
@@ -88,10 +73,7 @@ function totalAll() {
     let productQty = Number(productArray[i].quantity);
     totalQty += productQty
 
-
-    console.log("qty", productQty)
     // call API pour récupérer le prix
-
     fetch(`http://localhost:3000/api/products/${id}`)
       .then((res) => res.json())
       .then((productData) => {
@@ -101,21 +83,14 @@ function totalAll() {
         totalPricePerItem = productPrice * productQty
         totalPrice += totalPricePerItem
 
-
         ///Affichage de la quantité totale et  du prix du total
         document.getElementById("totalQuantity").innerHTML = totalQty
         document.getElementById("totalPrice").innerHTML = totalPrice
 
       })
-
-
   }
-
-
 }
 totalAll();
-
-
 
 
 
@@ -124,13 +99,9 @@ totalAll();
 
 
 
-
-
 function displayProduct() {
   // Récupération des données du localStorage et création du tableau
   let productArray = JSON.parse(localStorage.getItem("product"));
-
-
 
   // si le panier est vide
   if (productArray == null || productArray.length == 0) {
@@ -138,19 +109,15 @@ function displayProduct() {
     let cartTitle = document.querySelector("#cartAndFormContainer >h1")
     cartTitle.innerText += " est vide"
 
-
     // si le panier contient des produits   
   } else {
     for (let i = 0; i < productArray.length; i++) {
       let id = productArray[i].id
 
-
       // call API pour récupérer le nom et les photos
-
       fetch(`http://localhost:3000/api/products/${id}`)
         .then((res) => res.json())
         .then((productData) => {
-
 
           // Ajout de <artcile> à la page panier
           document.getElementById("cart__items").innerHTML += `<article class="cart__item" data-id="${productData._id}" data-color="${productArray[i].color}">
@@ -175,12 +142,8 @@ function displayProduct() {
         </div>
       </article>`
 
-
           deleteProduct();
           changeQuantity();
-
-
-
 
 
         })
@@ -212,7 +175,6 @@ let namesRegex = /^[a-zA-Zèé\-]+$/
 let addressRegex = /^[0-9]{1,3}[a-zA-Zèé\-'\s]+$/
 let emailRegex = /^[a-zA-Z\.-]+@[a-zA-Z]+\.[a-zA-Z]{2,3}$/
 
-
 // fonction de verification du prénom
 function formVerif(regex, input, errorId, errorMsg) {
   let regexResult = regex.test(input)
@@ -220,7 +182,6 @@ function formVerif(regex, input, errorId, errorMsg) {
   if (regexResult == true) {
     document.getElementById(errorId).innerText = ""
     return true
-
 
   } else {
     document.getElementById(errorId).innerText = errorMsg
@@ -234,9 +195,6 @@ function inputTxt(inputName, regex, errorId, errorMsg) {
     formVerif(regex, inputName.value, errorId, errorMsg);
   })
 }
-
-
-
 
 inputTxt(firstName, namesRegex, "firstNameErrorMsg", "Le prénom ne doit contenir que des lettres");
 inputTxt(lastName, namesRegex, "lastNameErrorMsg", "Le nom ne doit contenir que des lettres");
@@ -259,19 +217,12 @@ console.log('orderBtn', orderBtn)
 
 orderBtn.addEventListener('click', function (e) {
   e.preventDefault();
-
   let firstNameResult = formVerif(namesRegex, firstName.value, "firstNameErrorMsg", "Le prénom ne doit contenir que des lettres")
   let lastNameResult = formVerif(namesRegex, lastName.value, "lastNameErrorMsg", "Le nom ne doit contenir que des lettres")
   let addressResult = formVerif(addressRegex, address.value, "addressErrorMsg", "Le format d'adresse est incorrect")
   let cityResult = formVerif(namesRegex, city.value, "cityErrorMsg", "La ville est incorrecte")
   let emailResult = formVerif(emailRegex, email.value, "emailErrorMsg", "L'email est incorrect")
 
-  console.log("commande")
-  console.log(firstNameResult)
-  console.log(lastNameResult)
-  console.log(addressResult)
-  console.log(cityResult)
-  console.log(emailResult)
   if (firstNameResult && lastNameResult && addressResult && cityResult && emailResult) {
     console.log("regex OK")
 
@@ -286,7 +237,6 @@ orderBtn.addEventListener('click', function (e) {
       }
       return idProduct;
     }
-
     let productId = getIdProduct(productArray);
 
     //Création de l'objet JS avec les infos de commandes
@@ -299,13 +249,9 @@ orderBtn.addEventListener('click', function (e) {
         email: email.value
       },
       products: productId
-
     }
-    console.log('orderInfos', orderInfos)
-
 
     //Envoie des infos de commandes vers l'API
-
     fetch("http://localhost:3000/api/products/order", {
       method: "POST",
       headers: {
@@ -320,8 +266,6 @@ orderBtn.addEventListener('click', function (e) {
 
         //Récupération de l'ID de commande
         let orderId = newOrder.orderId
-        console.log('newOrder', newOrder)
-        console.log("orderId", orderId)
 
         //suppression du localStorage
         localStorage.clear();

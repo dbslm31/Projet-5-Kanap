@@ -51,24 +51,16 @@ cartButton.addEventListener("click", () => {
     // Récupération de ce que contient le local storage
     let productArray = JSON.parse(localStorage.getItem("product"))
 
-
-
     // Définition des variables color et quantity
     let color = document.getElementById("colors").value;
     let quantity = Number(document.getElementById("quantity").value);
-    console.log('color', color);
-    console.log('quantity', quantity);
-
 
     //Création objet JS avec les infos du produit
     let productInfos = {
         id: id,
         color: color,
         quantity: quantity
-
     }
-
-    console.log("productInfos Name", productInfos.name)
 
     // si la couleur ou la quantité n'est pas selectionnée
     if (color == "" || quantity == "") {
