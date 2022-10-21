@@ -219,13 +219,13 @@ function formVerif(regex, input, errorId, errorMsg) {
 
   if (regexResult == true) {
     document.getElementById(errorId).innerText = ""
-    let result = 1
-    return true;
+    return true
+
 
   } else {
     document.getElementById(errorId).innerText = errorMsg
-    let result = 0
-    return false;
+    return false
+
   }
 }
 
@@ -235,10 +235,14 @@ function inputTxt(inputName, regex, errorId, errorMsg) {
   })
 }
 
-let firstNameInput = inputTxt(firstName, namesRegex, "firstNameErrorMsg", "Le prénom ne doit contenir que des lettres");
-let lastNameInput = inputTxt(lastName, namesRegex, "lastNameErrorMsg", "Le nom ne doit contenir que des lettres");
-let addressInput = inputTxt(address, addressRegex, "addressErrorMsg", "Le format d'adresse est incorrect");
-let emailInput = inputTxt(email, emailRegex, "emailErrorMsg", "L'email est incorrect");
+
+
+
+inputTxt(firstName, namesRegex, "firstNameErrorMsg", "Le prénom ne doit contenir que des lettres");
+inputTxt(lastName, namesRegex, "lastNameErrorMsg", "Le nom ne doit contenir que des lettres");
+inputTxt(address, addressRegex, "addressErrorMsg", "Le format d'adresse est incorrect");
+inputTxt(city, namesRegex, "cityErrorMsg", "La ville est incorrecte");
+inputTxt(email, emailRegex, "emailErrorMsg", "L'email est incorrect");
 
 
 
@@ -256,9 +260,19 @@ console.log('orderBtn', orderBtn)
 orderBtn.addEventListener('click', function (e) {
   e.preventDefault();
 
-  console.log("commande")
+  let firstNameResult = formVerif(namesRegex, firstName.value, "firstNameErrorMsg", "Le prénom ne doit contenir que des lettres")
+  let lastNameResult = formVerif(namesRegex, lastName.value, "lastNameErrorMsg", "Le nom ne doit contenir que des lettres")
+  let addressResult = formVerif(addressRegex, address.value, "addressErrorMsg", "Le format d'adresse est incorrect")
+  let cityResult = formVerif(namesRegex, city.value, "cityErrorMsg", "La ville est incorrecte")
+  let emailResult = formVerif(emailRegex, email.value, "emailErrorMsg", "L'email est incorrect")
 
-  if (result = 1) {
+  console.log("commande")
+  console.log(firstNameResult)
+  console.log(lastNameResult)
+  console.log(addressResult)
+  console.log(cityResult)
+  console.log(emailResult)
+  if (firstNameResult && lastNameResult && addressResult && cityResult && emailResult) {
     console.log("regex OK")
 
     // Récupération id, couleur et qty produits
@@ -309,11 +323,13 @@ orderBtn.addEventListener('click', function (e) {
         console.log('newOrder', newOrder)
         console.log("orderId", orderId)
 
+        //suppression du localStorage
+        localStorage.clear();
+
         // Redirection vers la page confirmation
         window.location = "confirmation.html?orderid=" + orderId
 
-        //suppression du localStorage
-        localStorage.clear();
+
 
 
 
@@ -335,6 +351,7 @@ orderBtn.addEventListener('click', function (e) {
 
   } else {
     alert("Veuillez vérifier les informations du formulaire");
+    formVerif();
   }
 
 })
