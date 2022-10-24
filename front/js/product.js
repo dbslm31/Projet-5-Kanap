@@ -11,7 +11,7 @@ const fetchProduct = async () => {
         .then((res) => res.json())
         .then((promise) => {
             productData = promise;
-            console.log('product Data', productData);
+
 
             //product image
             let productImg = document.querySelector(".item__img").innerHTML = `
@@ -70,7 +70,6 @@ cartButton.addEventListener("click", () => {
     } else if (productArray == null) {
         productArray = [];
         productArray.push(productInfos)
-        console.log("productArray", productArray);
         localStorage.setItem("product", JSON.stringify(productArray));
 
 
@@ -78,7 +77,6 @@ cartButton.addEventListener("click", () => {
     } else {
 
         const findProduct = productArray.find(product => product.id === id && product.color === color)
-        console.log(findProduct)
         if (findProduct != undefined) {
 
             let newQuantity = Number(findProduct.quantity);

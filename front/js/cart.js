@@ -167,8 +167,6 @@ let lastName = document.getElementById("lastName")
 let address = document.getElementById("address")
 let city = document.getElementById("city")
 let email = document.getElementById("email")
-console.log("email", email)
-console.log("firstName", firstName)
 
 // Définition des regex 
 let namesRegex = /^[a-zA-Zèé\-]+$/
@@ -213,7 +211,7 @@ inputTxt(email, emailRegex, "emailErrorMsg", "L'email est incorrect");
 //addEventListener onclick sur le bouton  "commander"
 
 let orderBtn = document.getElementById('order')
-console.log('orderBtn', orderBtn)
+
 
 orderBtn.addEventListener('click', function (e) {
   e.preventDefault();
@@ -224,7 +222,7 @@ orderBtn.addEventListener('click', function (e) {
   let emailResult = formVerif(emailRegex, email.value, "emailErrorMsg", "L'email est incorrect")
 
   if (firstNameResult && lastNameResult && addressResult && cityResult && emailResult) {
-    console.log("regex OK")
+
 
     // Récupération id, couleur et qty produits
     let productArray = JSON.parse(localStorage.getItem("product"));
@@ -295,7 +293,12 @@ orderBtn.addEventListener('click', function (e) {
 
   } else {
     alert("Veuillez vérifier les informations du formulaire");
-    formVerif();
+    firstNameResult;
+    lastNameResult;
+    addressResult;
+    cityResult;
+    emailResult;
+
   }
 
 })
